@@ -1,7 +1,13 @@
-#ready {
+.ready {
+    width: 50%;
     float: left;
 }
 
-#consumed {
+.consumed {
+    width: 50%;
     float: right;
+}
+
+.add {
+    clear: both;
 }
