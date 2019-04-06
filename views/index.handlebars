@@ -1,0 +1,75 @@
+<h1>Eat-Da-Burger</h1>
+
+<section class="ready">
+    <h2>Burgers Ready to Eat</h2>
+
+    <ul>
+        {{#each burgers}}
+        {{#unless this.devoured}}
+        <li>
+            {{this.burger_name}}
+
+            <button class="change-devoured" data-id="{{this.id}}" data-devoured="{{this.devoured}}">
+                Eat me!
+            </button>
+        </li>
+        {{/unless}}
+        {{/each}}
+    </ul>
+</section>
+
+<section class="consumed">
+    <h2>Burgers Already Consumed: </h2>
+
+    <ul>
+        {{#each burgers}}
+        {{#if this.devoured}}
+        <li>
+            {{this.burger_name}}
+
+            <button class="change-devoured" data-id="{{this.id}}" data-devoured="{{this.devoured}}">
+                Make Another!
+            </button>
+        </li>
+        {{/if}}
+        {{/each}}
+    </ul>
+
+</section>
+
+<h2>Add a Burger</h2>
+<form class="create-form" action="/">
+
+    <div class="form-group">
+        <label for="another-burger">Burger Name:</label>
+        <input type="text" id="another-burger" name="name" placeholder="Hamburger">
+    </div>
+
+    <div class="form-group">
+        <label for="devoured">Ate it Already?</label><br>
+        <input type="radio" name="devoured" value="0" checked> Ready<br>
+        <input type="radio" name="devoured" value="1"> Eaten
+    </div>
+
+    <button type="submit">Add Burger</button>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script>
+    $(document).ready(() => {
+        $(".change-devoured").on("click", (event) => {
+            event.preventDefault();
+
+            // Flip the devoured boolean
+            const changedState = !$(this).attr("data-devoured");
+            $.ajax({
+                method: "PUT",
+                url: "/api/burgers/" + $(this).attr("data-id"),
+                contents: {
+                    devoured: changedState
+                }
+            });
+        });
+    });
+
+</script>
