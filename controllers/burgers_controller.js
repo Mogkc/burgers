@@ -10,13 +10,15 @@ module.exports = (app) => {
         });
     });
 
-    app.post("/", (req, res) => {
+    app.post("/api/burgers", (req, res) => {
         burgers.insertBurger(req.body.name, req.body.devoured, result => {
             if (result.affectedRows === 0) {
                 // If no rows were changed, then the ID must not exist, so 404
-                return res.status(404).end();
+                res.status(404);
+            } else {
+                res.status(200);
             }
-            res.status(200).end();
+            res.redirect("/");
         });
     });
 
@@ -25,9 +27,11 @@ module.exports = (app) => {
             result => {
                 if (result.changedRows === 0) {
                     // If no rows were changed, then the ID must not exist, so 404
-                    return res.status(404).end();
+                    return res.status(404);
+                } else {
+                    res.status(200);
                 }
-                res.status(200).end();
+                res.redirect("/");
             }
         );
     });
